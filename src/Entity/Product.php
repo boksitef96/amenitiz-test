@@ -7,7 +7,6 @@ class Product
     private string $code;
     private string $name;
     private string $price;
-    private array $discounts = [];
 
     /**
      * @return string
@@ -31,13 +30,5 @@ class Product
     public function getPrice(): string
     {
         return $this->price;
-    }
-
-    /**
-     * @return Discount[]
-     */
-    public function getDiscounts(): array
-    {
-        return $this->discounts;
     }
 }

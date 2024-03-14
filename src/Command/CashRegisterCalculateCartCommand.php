@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Service\CartService;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -16,6 +17,11 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class CashRegisterCalculateCartCommand extends Command
 {
+    public function __construct(private CartService $cartService, ?string $name = null)
+    {
+        parent::__construct($name);
+    }
+
     protected function configure(): void
     {
         $this
@@ -34,8 +40,9 @@ class CashRegisterCalculateCartCommand extends Command
             return Command::SUCCESS;
         }
 
-        $io->success('Calculating total price for products: ' . implode(', ', $products));
+        $io->info('Calculating total price for products: ' . implode(', ', $products));
 
+        $this->cartService->calculateCartPrice($products);
 
         return Command::SUCCESS;
     }
