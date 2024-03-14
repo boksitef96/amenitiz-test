@@ -22,9 +22,9 @@ class CartService
         $cartData = $this->prepareCartData($inputData);
         $cartData = $this->discountService->applyDiscountToCart($cartData);
 
-        [$price, $discount, $appliedDiscounts] = $this->calculateCartPrice($cartData);
+        [$finalPrice, $totalPrice, $discount, $appliedDiscounts] = $this->calculateCartPrice($cartData);
 
-        return [$price, $discount, $appliedDiscounts];
+        return [$finalPrice, $totalPrice, $discount, $appliedDiscounts];
     }
 
     /**
@@ -83,11 +83,13 @@ class CartService
 
     public function calculateCartPrice(array $cartData): array
     {
-        $price = 0;
+        $finalPrice = 0;
+        $totalPrice = 0;
         $discount = 0;
         $appliedDiscounts = [];
         foreach ($cartData as $product) {
-            $price += $product['finalPrice'];
+            $finalPrice += $product['finalPrice'];
+            $totalPrice += $product['totalPrice'];
             $discount += $product['discount'];
             $appliedDiscounts = [
                 ...$appliedDiscounts,
@@ -95,6 +97,6 @@ class CartService
             ];
         }
 
-        return [round($price, 2), round($discount, 2), $appliedDiscounts];
+        return [round($finalPrice, 2), round($totalPrice, 2), round($discount, 2), $appliedDiscounts];
     }
 }
