@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Entity\Discount;
-use App\Entity\Product;
 use App\Enums\DiscountTypeEnum;
 use App\Service\DiscountType\BulkDiscountService;
 use App\Service\DiscountType\DiscountTypeInterface;
@@ -12,7 +11,7 @@ use App\Service\DiscountType\QuantityDiscountService;
 
 class DiscountService
 {
-    public function __construct(private PlusOneDiscountService $plusOneDiscountService,private BulkDiscountService $bulkDiscountService, private QuantityDiscountService $quantityDiscountService)
+    public function __construct(private PlusOneDiscountService $plusOneDiscountService, private BulkDiscountService $bulkDiscountService, private QuantityDiscountService $quantityDiscountService)
     {
     }
 
@@ -24,10 +23,10 @@ class DiscountService
                 if (empty($discountService)) {
                     continue;
                 }
-                if (!$discountService->isApplicable($productData)) {
+                if (!$discountService->isApplicable($productData, $discount)) {
                     continue;
                 }
-//                $productData = $discountService->applyDiscount($productData);
+                $productData = $discountService->applyDiscount($productData, $discount);
             }
 
             $cartData[$key] = $productData;

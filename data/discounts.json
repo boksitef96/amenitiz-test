@@ -6,15 +6,15 @@
   },
   {
     "product_code": "SR1",
-    "type": "bulk_discount",
+    "type": "quantity_discount",
     "additional_data": {
       "threshold": 3,
-      "discounted_price": "4.50"
+      "discount_price": "4.50"
     }
   },
   {
     "product_code": "CF1",
-    "type": "quantity_discount",
+    "type": "bulk_discount",
     "additional_data": {
       "threshold": 3,
       "discount_percent": "33.33"

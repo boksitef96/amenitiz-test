@@ -4,8 +4,8 @@ namespace App\Entity;
 
 class Discount
 {
-    private string $type;
-    private string $productCode = '';
+    private string                 $type;
+    private string                 $productCode = '';
     private DiscountAdditionalData $additionalData;
 
     /**
@@ -35,7 +35,7 @@ class Discount
 
 class DiscountAdditionalData
 {
-    private float $threshold;
+    private float  $threshold;
     private ?float $discountPercent;
     private ?float $discountPrice;
 

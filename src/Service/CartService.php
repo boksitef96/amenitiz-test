@@ -15,12 +15,16 @@ class CartService
     /**
      * @param  array  $inputData
      *
-     * @return void
+     * @return array
      */
-    public function calculateCartPrice(array $inputData)
+    public function getCartPrice(array $inputData): array
     {
         $cartData = $this->prepareCartData($inputData);
         $cartData = $this->discountService->applyDiscountToCart($cartData);
+
+        [$price, $discount, $appliedDiscounts] = $this->calculateCartPrice($cartData);
+
+        return [$price, $discount, $appliedDiscounts];
     }
 
     /**
@@ -69,8 +73,28 @@ class CartService
 
             $cartData[$cartItem]['quantity'] += 1;
             $cartData[$cartItem]['totalPrice'] = $cartData[$cartItem]['quantity'] * $cartData[$cartItem]['price'];
+            $cartData[$cartItem]['discount'] = 0;
+            $cartData[$cartItem]['appliedDiscounts'] = [];
+            $cartData[$cartItem]['finalPrice'] = $cartData[$cartItem]['totalPrice'];
         }
 
         return $cartData;
+    }
+
+    public function calculateCartPrice(array $cartData): array
+    {
+        $price = 0;
+        $discount = 0;
+        $appliedDiscounts = [];
+        foreach ($cartData as $product) {
+            $price += $product['finalPrice'];
+            $discount += $product['discount'];
+            $appliedDiscounts = [
+                ...$appliedDiscounts,
+                ...$product['appliedDiscounts']
+            ];
+        }
+
+        return [round($price, 2), round($discount, 2), $appliedDiscounts];
     }
 }
