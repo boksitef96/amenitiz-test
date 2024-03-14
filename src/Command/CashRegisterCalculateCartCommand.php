@@ -46,6 +46,7 @@ class CashRegisterCalculateCartCommand extends Command
             [$finalPrice, $totalPrice, $discount, $appliedDiscounts] = $this->cartService->getCartPrice($products);
         } catch (Exception $exception) {
             $io->error('There is a problem calculating your price');
+            $io->error($exception->getMessage());
 
             return Command::FAILURE;
         }

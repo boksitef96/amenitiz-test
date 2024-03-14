@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Entity\Discount;
 use App\Entity\Product;
 use JMS\Serializer\SerializerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CartService
 {
@@ -58,7 +59,7 @@ class CartService
                         return $value->getCode() === $cartItem;
                     }))[0] ?? null;
                 if (empty($productData)) {
-                    dd("error");
+                    throw new NotFoundHttpException('Product not found');
                 }
 
                 $discountData = array_filter($discountsData, function (Discount $value) use ($cartItem) {
@@ -97,6 +98,6 @@ class CartService
             ];
         }
 
-        return [round($finalPrice, 2), round($totalPrice, 2), round($discount, 2), $appliedDiscounts];
+        return [number_format(round($finalPrice, 2), 2), number_format(round($totalPrice, 2), 2), number_format(round($discount, 2), 2), $appliedDiscounts];
     }
 }
